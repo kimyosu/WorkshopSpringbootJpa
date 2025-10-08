@@ -1,10 +1,10 @@
 package com.kimy.course.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -26,6 +26,8 @@ public class User implements Serializable {
     private String email;
     private String phone;
     private String password;
+
+    @JsonIgnore // para evitar loop infinito na serialização JSON
     //Um User pode ter muitos Orders (pedidos).
     //mappedBy = "client" indica que o lado dono do relacionamento é a classe Order, no atributo client.
     @OneToMany(mappedBy = "client") // um para muitos com Order

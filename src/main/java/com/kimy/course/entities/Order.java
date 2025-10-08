@@ -1,5 +1,6 @@
 package com.kimy.course.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +23,8 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment no MySQL
     private Long id;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+    // formata a data no padrão ISO 8601 para o JSON de saída
     private Instant moment;
 
     //******Cada Order precisa saber a qual User pertence, então a FK vai em Order (client_id).******
