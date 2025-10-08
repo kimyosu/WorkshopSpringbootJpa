@@ -1,12 +1,12 @@
 package com.kimy.course.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.kimy.course.entities.enums.OrderStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -27,6 +27,9 @@ public class Order implements Serializable {
     // formata a data no padrão ISO 8601 para o JSON de saída
     private Instant moment;
 
+    //Integer para armazenar o código do enum no banco de dados
+    private Integer orderStatus;
+
     //******Cada Order precisa saber a qual User pertence, então a FK vai em Order (client_id).******
     @ManyToOne // muitos para um com User
     @JoinColumn(name = "client_id") // nome da chave estrangeira na tabela Order
@@ -34,12 +37,15 @@ public class Order implements Serializable {
     private User client;
 
 
-    public Order(){}
+    public Order() {
+    }
 
-    public Order(Long id, Instant moment, User client) {
+    public Order(Long id, Instant moment, OrderStatus orderStatus,  User client) {
+
         this.id = id;
         this.moment = moment;
         this.client = client;
+        setOrderStatus(orderStatus); // Usando o método setOrderStatus para garantir a conversão correta
     }
 
     public Long getId() {
@@ -64,6 +70,21 @@ public class Order implements Serializable {
 
     public void setClient(User client) {
         this.client = client;
+    }
+
+    public OrderStatus getOrderStatus() {
+        //Esse orderStatus atributo é um Integer aqui na classe Order
+        return OrderStatus.valueOf(orderStatus);
+        //Método estático valueOf(int code) retorna  um OrderStatus correspondente ao código armazenado
+            //Exemplo se orderStatus for 2, retorna OrderStatus.PAID
+        //Ele pega um numero inteiro e converte para o enum OrderStatus
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        if (orderStatus != null) { // se o código for diferente de nulo
+            this.orderStatus = orderStatus.getCode(); // armazena o código do enum no atributo orderStatus
+            //getCode retorna o código do enum(integer)
+        }
     }
 
     @Override
