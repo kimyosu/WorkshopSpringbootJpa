@@ -1,10 +1,15 @@
 package com.kimy.course.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -24,7 +29,22 @@ public class Product implements Serializable {
     private String description;
     private Double price;
     private String imgUrl;
-    @Transient // indica que esse atributo não será mapeado para uma coluna no banco de dados
+
+
+    /*
+    Fetch = Significa que o Hibernate vai buscar os dados relacionados
+    EAGER = Carrega tudo de um vez quando você busca o produto
+        Exemplo: findAll de Produto já traz todas as categorias relacionadas na mesma query
+     */
+    @ManyToMany(fetch = FetchType.EAGER) // antes: apenas @ManyToMany()
+    @JoinTable(name = "tb_product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    /*
+    name = Indica qual vai ser o nome da tabela que vai fazer a associação/ficar no meio do product e category
+    JoinColumns = Indica qual o nome da chave estrangeira referente a tabela de product
+    inverseJoinColumns = Indica qual vai ser a chave estranjeira da outra tabela(igual o de cima)
+     */
     private Set<Category> categories = new HashSet<>();
 
     public Product() {

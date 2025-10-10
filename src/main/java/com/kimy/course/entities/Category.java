@@ -1,9 +1,11 @@
 package com.kimy.course.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -26,7 +28,8 @@ public class Category implements Serializable {
     private Long id;
     private String name;
 
-    @Transient // indica que esse atributo não será mapeado para uma coluna no banco de dados
+    @ManyToMany(mappedBy = "categories") //Indica que é uma relação de muitos para muitos, categories é o nome da coleção
+        //Da classe Product
     private Set<Product> products = new HashSet<>();
 
     public Category() {
