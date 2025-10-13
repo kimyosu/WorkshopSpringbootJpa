@@ -2,10 +2,12 @@ package com.kimy.course.config;
 
 import com.kimy.course.entities.Category;
 import com.kimy.course.entities.Order;
+import com.kimy.course.entities.OrderItem;
 import com.kimy.course.entities.Product;
 import com.kimy.course.entities.User;
 import com.kimy.course.entities.enums.OrderStatus;
 import com.kimy.course.repositories.CategoryRepository;
+import com.kimy.course.repositories.OrderItemRepository;
 import com.kimy.course.repositories.OrderRepository;
 import com.kimy.course.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -58,6 +63,9 @@ public class TestConfig implements CommandLineRunner {
         User user2  = new User(null, "Kimy Sysout", "kimy@gmail.com","199213129", "asda5");
         Order order = new Order(null, Instant.parse("2024-06-21T19:53:07Z"), OrderStatus.PAID, user1);
         Order order2 = new Order(null, Instant.parse("2024-08-13T19:41:07Z"),OrderStatus.CANCELED, user2);
+
+        Order order3 = new Order(null, Instant.parse("2022-01-11T19:41:07Z"),OrderStatus.CANCELED, user2);
+        Order order4 = new Order(null, Instant.parse("2021-05-29T19:41:07Z"),OrderStatus.CANCELED, user2);
         //#endregion
 
 
@@ -65,6 +73,14 @@ public class TestConfig implements CommandLineRunner {
         userRepository.saveAll(Arrays.asList(user1, user2));
 
         // salva os pedidos no banco de dados em lote
-        orderRepository.saveAll(Arrays.asList(order, order2));
+        orderRepository.saveAll(Arrays.asList(order, order2, order3, order4));
+
+        OrderItem oi1 = new OrderItem(order, p1, 2, p1.getPrice());
+        OrderItem oi2 = new OrderItem(order2, p3, 1, p3.getPrice());
+        OrderItem oi3 = new OrderItem(order3, p3, 2, p3.getPrice());
+        OrderItem oi4 = new OrderItem(order4, p5, 2, p5.getPrice());
+
+        orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+
     }
 }
