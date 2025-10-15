@@ -60,17 +60,19 @@ public class TestConfig implements CommandLineRunner {
         productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
         //#region User and Order instances
         User user1  = new User(null, "Maria Marque", "maria@gmail.com","888218", "12345");
-        User user2  = new User(null, "Kimy Sysout", "kimy@gmail.com","199213129", "asda5");
+        User user2  = new User(null, "Jão marquis", "jao@gmail.com","512512", "1292");
+        User user3  = new User(null, "Likata Sysout", "Likata@gmail.com","889292", "12591");
+        User user4 = new User(null, "Kimy Sysout", "kimy@gmail.com","199213129", "asda5");
         Order order = new Order(null, Instant.parse("2024-06-21T19:53:07Z"), OrderStatus.PAID, user1);
         Order order2 = new Order(null, Instant.parse("2024-08-13T19:41:07Z"),OrderStatus.CANCELED, user2);
 
-        Order order3 = new Order(null, Instant.parse("2022-01-11T19:41:07Z"),OrderStatus.CANCELED, user2);
-        Order order4 = new Order(null, Instant.parse("2021-05-29T19:41:07Z"),OrderStatus.CANCELED, user2);
+        Order order3 = new Order(null, Instant.parse("2022-01-11T19:41:07Z"),OrderStatus.CANCELED, user3);
+        Order order4 = new Order(null, Instant.parse("2021-05-29T19:41:07Z"),OrderStatus.CANCELED, user4);
         //#endregion
 
 
         // salva os usuários no banco de dados em lote
-        userRepository.saveAll(Arrays.asList(user1, user2));
+        userRepository.saveAll(Arrays.asList(user1, user2, user3, user4));
 
         // salva os pedidos no banco de dados em lote
         orderRepository.saveAll(Arrays.asList(order, order2, order3, order4));

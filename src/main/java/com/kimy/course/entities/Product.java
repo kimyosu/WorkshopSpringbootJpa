@@ -10,8 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -21,7 +21,6 @@ import java.util.Set;
 @Entity
 @Table(name = "tb_product")
 public class Product implements Serializable {
-    public static Long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment no MySQL
     private Long id;
@@ -46,6 +45,16 @@ public class Product implements Serializable {
     inverseJoinColumns = Indica qual vai ser a chave estranjeira da outra tabela(igual o de cima)
      */
     private Set<Category> categories = new HashSet<>();
+
+
+    /*
+    id = Atributo chamado id dentro do OrderItem, esse id é um OrderItemPk, dentro dele temos um product, que é onde estamos
+        acessando
+    mappedBy = estamos dizendo que a chave estrangeira está lá no id.product
+    Esse id.product que tem a chave estrangeira da Product(classe atual desse comentario)
+     */
+    @OneToMany(mappedBy = "id.product")
+    private Set<OrderItem> items = new HashSet<>();
 
     public Product() {
     }
@@ -102,6 +111,14 @@ public class Product implements Serializable {
         return categories;
     }
 
+    @JsonIgnore
+    public Set<Order> getOrders(){
+        Set<Order> set  = new HashSet<>();
+        for (OrderItem x : items){
+            set.add(x.getOrder());
+        }
+        return set;
+    }
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

@@ -1,7 +1,6 @@
 package com.kimy.course.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kimy.course.entities.enums.OrderStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

@@ -20,6 +20,7 @@ public class OrderItemPK implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonIgnore // Evita loop infinito na serialização
     private Product product;
 
     public Order getOrder() {

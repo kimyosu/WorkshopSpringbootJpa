@@ -32,7 +32,7 @@ public class OrderItem implements Serializable {
         this.price = price;
     }
 
-    @JsonIgnore
+    @JsonIgnore // Evita ciclo de serialização
     public Order getOrder(){
         return id.getOrder();
     }
@@ -40,6 +40,7 @@ public class OrderItem implements Serializable {
         id.setOrder(order);
     }
 
+    @JsonIgnore // Evita ciclo de serialização
     public Product getProduct(){
         return id.getProduct();
     }
@@ -48,6 +49,7 @@ public class OrderItem implements Serializable {
     }
 
 
+    @JsonIgnore // Evita serialização recursiva do id
     public OrderItemPK getId() {
         return id;
     }
