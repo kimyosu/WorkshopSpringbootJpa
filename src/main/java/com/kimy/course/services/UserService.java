@@ -24,4 +24,8 @@ public class UserService {
         return userRepository.save(obj);
         //.save retorna o objeto, por isso juntei com o return
     }
+
+    public void delete(Long id){
+        userRepository.deleteById(id);
+    }
 }
