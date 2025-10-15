@@ -3,6 +3,7 @@ package com.kimy.course.config;
 import com.kimy.course.entities.Category;
 import com.kimy.course.entities.Order;
 import com.kimy.course.entities.OrderItem;
+import com.kimy.course.entities.Payment;
 import com.kimy.course.entities.Product;
 import com.kimy.course.entities.User;
 import com.kimy.course.entities.enums.OrderStatus;
@@ -83,6 +84,11 @@ public class TestConfig implements CommandLineRunner {
         OrderItem oi4 = new OrderItem(order4, p5, 2, p5.getPrice());
 
         orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+
+        Payment pay1 = new Payment(null, Instant.parse("2024-06-21T21:53:07Z"), order);
+        order.setPayment(pay1);
+        orderRepository.save(order); // atualiza o pedido com o pagamento associado
+
 
     }
 }
