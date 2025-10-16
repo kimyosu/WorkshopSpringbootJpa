@@ -4,6 +4,7 @@ import com.kimy.course.entities.User;
 import com.kimy.course.repositories.UserRepository;
 import com.kimy.course.resources.exceptions.DataBaseException;
 import com.kimy.course.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.apache.catalina.webresources.EmptyResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -49,12 +50,15 @@ public class UserService {
     public User update(Long id, User obj){
         /* getReferenceById = instancia um objeto sem ir no banco de dados, diferente do findById que já vai no banco de dados
          o getReferenceById só vai no banco de dados quando for necessário */
+        try {
+            User entity = userRepository.getReferenceById(id);
 
-        User entity = userRepository.getReferenceById(id);
-
-        // atualiza os dados da entidade com base nos dados do obj
-        updateDta(entity, obj);
-        return userRepository.save(entity);
+            // atualiza os dados da entidade com base nos dados do obj
+            updateDta(entity, obj);
+            return userRepository.save(entity);
+        }catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     private void updateDta(User entity, User obj) {
