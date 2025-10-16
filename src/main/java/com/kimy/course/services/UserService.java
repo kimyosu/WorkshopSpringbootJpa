@@ -3,6 +3,7 @@ package com.kimy.course.services;
 import com.kimy.course.entities.User;
 import com.kimy.course.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,5 +28,23 @@ public class UserService {
 
     public void delete(Long id){
         userRepository.deleteById(id);
+    }
+
+    public User update(Long id, User obj){
+        /* getReferenceById = instancia um objeto sem ir no banco de dados, diferente do findById que já vai no banco de dados
+         o getReferenceById só vai no banco de dados quando for necessário */
+
+        User entity = userRepository.getReferenceById(id);
+
+        // atualiza os dados da entidade com base nos dados do obj
+        updateDta(entity, obj);
+        return userRepository.save(entity);
+    }
+
+    private void updateDta(User entity, User obj) {
+        // atualiza os dados da entidade com base nos dados do obj
+        entity.setName(obj.getName());
+        entity.setEmail(obj.getEmail());
+        entity.setPhone(obj.getPhone());
     }
 }
