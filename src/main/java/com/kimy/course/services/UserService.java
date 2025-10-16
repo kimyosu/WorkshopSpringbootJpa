@@ -2,6 +2,7 @@ package com.kimy.course.services;
 
 import com.kimy.course.entities.User;
 import com.kimy.course.repositories.UserRepository;
+import com.kimy.course.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,8 @@ public class UserService {
     }
     public User findById(Long id){
         Optional<User> optionalUser =  userRepository.findById(id);
-        return optionalUser.get();
+        return optionalUser.orElseThrow(() -> new ResourceNotFoundException(id));
+        // se o usuário não for encontrado, lança uma exceção ResourceNotFoundException
     }
 
     public User insert(User obj){
