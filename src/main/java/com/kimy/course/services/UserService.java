@@ -2,8 +2,12 @@ package com.kimy.course.services;
 
 import com.kimy.course.entities.User;
 import com.kimy.course.repositories.UserRepository;
+import com.kimy.course.resources.exceptions.DataBaseException;
 import com.kimy.course.services.exceptions.ResourceNotFoundException;
+import org.apache.catalina.webresources.EmptyResource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +33,17 @@ public class UserService {
     }
 
     public void delete(Long id){
-        userRepository.deleteById(id);
+        try {
+            userRepository.deleteById(id);
+
+            //EmptyResultDataAccessException = exceção lançada quando uma operação de exclusão não encontra o recurso
+        }catch (EmptyResultDataAccessException e){
+            throw new ResourceNotFoundException(id);
+        }catch (DataIntegrityViolationException e){
+            /*DataIntegrityViolationException = exceção lançada quando uma operação viola uma restrição de
+                  integridade do banco de dados */
+            throw new DataBaseException(e.getMessage());
+        }
     }
 
     public User update(Long id, User obj){
